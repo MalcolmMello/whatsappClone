@@ -12,7 +12,7 @@ import SendIcon from '@material-ui/icons/Send';
 import MicIcon from '@material-ui/icons/Mic';
 import { DragHandleRounded } from "@material-ui/icons";
 
-export default ({user}) => {
+export default ({user, data}) => {
 
     const body = useRef()
 
@@ -27,27 +27,7 @@ export default ({user}) => {
     const [text, setText] = useState('')
     const [listening, setListening] = useState(false)
     const [list, setList] = useState([
-        {author:123, body:'bla bla bla'},
-        {author:123, body:'bla bla'},
-        {author:1234, body:'bla bla bla'},
-        {author:123, body:'bla bla bla'},
-        {author:123, body:'bla bla'},
-        {author:1234, body:'bla bla bla'},
-        {author:123, body:'bla bla bla'},
-        {author:123, body:'bla bla'},
-        {author:1234, body:'bla bla bla'},
-        {author:123, body:'bla bla bla'},
-        {author:123, body:'bla bla'},
-        {author:1234, body:'bla bla bla'},
-        {author:123, body:'bla bla bla'},
-        {author:123, body:'bla bla'},
-        {author:1234, body:'bla bla bla'},
-        {author:123, body:'bla bla bla'},
-        {author:123, body:'bla bla'},
-        {author:1234, body:'bla bla bla'},
-        {author:123, body:'bla bla bla'},
-        {author:123, body:'bla bla'},
-        {author:1234, body:'bla bla bla'},
+        {author:123, body:'Olá, tudo bem?'},
     ])
 
     useEffect(()=>{
@@ -81,15 +61,23 @@ export default ({user}) => {
             recognition.start()
         }
     }
+    const handleInputKeyUp = (e) => {
+        if(e.keyCode === 13) {
+            handleSendClick()
+        }
+    }
     const handleSendClick = () => {
-
+        if(text !== '') {
+            list.push({author:1234, body:text})
+            setText('')
+        }
     }
     return(
         <div className="chatWindow">
             <div className="chatWindow--header">
                 <div className="chatWindow--headerinfo">
-                    <img className="chatWindow--avatar" src="https://www.w3schools.com/howto/img_avatar2.png" alt="" />
-                    <div className="chatWindow--name">Malcolm Lima</div>
+                    <img className="chatWindow--avatar" src={data.image} alt="" />
+                    <div className="chatWindow--name">{data.title}</div>
                 </div>
                 <div className="chatWindow--headerbuttons">
                     <div className="chatWindow--btn">
@@ -139,6 +127,7 @@ export default ({user}) => {
                         type="text"
                         value={text}
                         onChange={e=>setText(e.target.value)}
+                        onKeyUp={handleInputKeyUp}
                         />
                 </div>
                 <div className="chatWindow--pos">
